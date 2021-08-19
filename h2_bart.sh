@@ -1,0 +1,12 @@
+python graph_rl.py --input_file ../data/src_covid_us/Covid.txt \
+    --output_file covid_h2_bart.json \
+    --log_dir /home/t-soadit/Projects/IEOutputs/h2_bart_all_sim_try2 \
+    --cls_model roberta-large \
+    --gen_model ~/Projects/IEOutputs/h1_bart_both/ \
+    --batch_size 64 \
+    --top_k 100 \
+    --steps 8000 \
+    --horizon 100 \
+    --sim_threshold 0.65 \
+    --use_sim_model \
+    --gen_model_name synth/facebook/bart-large

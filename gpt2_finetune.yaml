@@ -1,0 +1,29 @@
+description: GPT2 model for generating leakages
+
+target:
+  service: amlk8s
+  name: itpseasiav100cl
+  vc: resrchvc
+
+environment:
+  image: pytorch/pytorch:1.4-cuda10.1-cudnn7-devel
+  setup:
+    - pip install --user -r gpt2_requirements/requirements.txt
+    - export MKL_THREADING_LAYER=GNU
+
+code:
+  local_dir: $CONFIG_DIR/gpt2_finetune
+
+data:
+  local_dir: /home/t-rsarkar/Desktop/Microsoft_Internship/data/
+  remote_dir: data/gpt2
+
+jobs:
+- name: gpt2-large
+  sku: G1
+  command:
+  - python finetuning_scripts/run_language_modeling.py --model_type gpt2 --model_name_or_path gpt2-medium
+    --do_train --train_data_file $$AMLT_DATA_DIR/hate_queries --line_by_line 
+    --output_dir $$AMLT_OUTPUT_DIR/gpt2-medium --per_device_train_batch_size 16 --per_device_eval_batch_size 16
+    --num_train_epochs 5 --block_size 20 --learning_rate 5e-5 --save_steps 1000
+
